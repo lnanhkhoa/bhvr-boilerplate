@@ -1,0 +1,84 @@
+{
+  "projectName": "BHVR Boilerplate",
+  "projectDescription": "A monorepo boilerplate built with Bun, Hono, Vite, and React",
+  "primaryLanguages": ["typescript", "javascript", "tsx", "jsx"],
+  "framework": "turbo",
+  "architecture": {
+    "type": "monorepo",
+    "apps": [
+      {
+        "name": "client",
+        "type": "react-vite",
+        "path": "apps/client"
+      },
+      {
+        "name": "server",
+        "type": "hono",
+        "path": "apps/server"
+      }
+    ],
+    "packages": [
+      {
+        "name": "shared",
+        "type": "library",
+        "path": "packages/shared"
+      },
+      {
+        "name": "ui",
+        "type": "ui-components",
+        "path": "packages/ui"
+      },
+      {
+        "name": "eslint-config",
+        "type": "config",
+        "path": "packages/eslint-config"
+      },
+      {
+        "name": "typescript-config",
+        "type": "config",
+        "path": "packages/typescript-config"
+      }
+    ]
+  },
+  "buildSystem": {
+    "primary": "turbo",
+    "packageManager": "bun",
+    "scripts": {
+      "dev": "turbo dev",
+      "build": "turbo build",
+      "lint": "turbo lint",
+      "typeCheck": "turbo type-check",
+      "test": "turbo test"
+    }
+  },
+  "conventions": {
+    "codeStyle": {
+      "indentation": 2,
+      "quotes": "double",
+      "semicolons": true
+    },
+    "fileNaming": "kebab-case",
+    "componentNaming": "PascalCase"
+  },
+  "dependencies": {
+    "runtime": {
+      "hono": "^4.9.6"
+    },
+    "dev": {
+      "turbo": "^2.5.5",
+      "typescript": "5.9.2"
+    }
+  },
+  "environment": {
+    "node": ">=18",
+    "bun": ">=1.2.4"
+  },
+  "guidelines": [
+    "Follow TypeScript best practices with strict type checking",
+    "Use shared packages for common utilities and types",
+    "Maintain consistent code style across all apps and packages",
+    "Leverage Turbo's caching and parallel execution",
+    "Keep client and server code properly separated",
+    "Use the shared package for cross-app type definitions"
+  ]
+}

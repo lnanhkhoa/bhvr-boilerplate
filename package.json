@@ -1,0 +1,44 @@
+{
+  "name": "bhvr-boilerplate",
+  "version": "0.0.1",
+  "description": "A monorepo boilerplate built with Bun, Hono, Vite, and React. Inspired by https://github.com/stevedylandev/bhvr",
+  "author": "Khoa Le",
+  "license": "MIT",
+  "homepage": "https://github.com/lnanhkhoa/bhvr-boilerplate",
+  "private": false,
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:client": "turbo dev --filter=client",
+    "dev:server": "turbo dev --filter=server",
+    "build": "turbo build",
+    "build:client": "turbo build --filter=client",
+    "build:server": "turbo build --filter=server",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "postinstall": "turbo build --filter=@repo/shared"
+  },
+  "keywords": [
+    "bun",
+    "hono",
+    "react",
+    "vite",
+    "monorepo",
+    "turbo"
+  ],
+  "devDependencies": {
+    "bun-types": "latest",
+    "turbo": "^2.5.5"
+  },
+  "peerDependencies": {
+    "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "hono": "^4.9.6"
+  },
+  "packageManager": "bun@1.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
