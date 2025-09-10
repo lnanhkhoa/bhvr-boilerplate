@@ -14,20 +14,28 @@ While there are plenty of existing app building stacks out there, many of them a
 - **Shared Types**: Common type definitions shared between client and server
 - **Monorepo Structure**: Organized as a workspaces-based monorepo with Turbo for build orchestration
 - **Modern Stack**:
-  - [Bun](https://bun.sh) as the JavaScript runtime and package manager
-  - [Hono](https://hono.dev) as the backend framework
-  - [Vite](https://vitejs.dev) for frontend bundling
-  - [React](https://react.dev) for the frontend UI
-  - [Turbo](https://turbo.build) for monorepo build orchestration and caching
+  - [Bun](https://bun.sh) (1.2.4+) as the JavaScript runtime and package manager
+  - [Hono](https://hono.dev) (4.9.6) as the backend framework
+  - [Vite](https://vitejs.dev) (6.3.5) for frontend bundling
+  - [React](https://react.dev) (19.1.0) for the frontend UI
+  - [TypeScript](https://www.typescriptlang.org/) (5.9.2) for type safety
+  - [Tailwind CSS](https://tailwindcss.com) (4.1.10) for styling
+  - [Turbo](https://turbo.build) (2.5.5) for monorepo build orchestration and caching
+  - [shadcn/ui](https://ui.shadcn.com) components with Radix UI
+  - [TanStack Query](https://tanstack.com/query) for API state management
 
 ## Project Structure
 
 ```
 .
-├── client/               # React frontend
-├── server/               # Hono backend
-├── shared/               # Shared TypeScript definitions
-│   └── src/types/        # Type definitions used by both client and server
+├── apps/
+│   ├── client/           # React + Vite frontend with Tailwind CSS
+│   └── server/           # Hono backend API
+├── packages/
+│   ├── shared/           # Shared TypeScript definitions and utilities
+│   ├── ui/               # Reusable UI components
+│   ├── eslint-config/    # Shared ESLint configuration
+│   └── typescript-config/ # Shared TypeScript configuration
 ├── package.json          # Root package.json with workspaces
 └── turbo.json            # Turbo configuration for build orchestration
 ```
@@ -37,19 +45,20 @@ While there are plenty of existing app building stacks out there, many of them a
 bhvr uses Hono as a backend API for its simplicity and massive ecosystem of plugins. If you have ever used Express then it might feel familiar. Declaring routes and returning data is easy.
 
 ```
-server
-├── bun.lock
+apps/server/
+├── dist/                 # Built output with client exports
+├── src/
+│   ├── index.ts         # Main server entry point
+│   └── client.ts        # Hono client for type-safe API calls
 ├── package.json
-├── README.md
-├── src
-│   └── index.ts
-└── tsconfig.json
+├── tsconfig.json
+└── README.md
 ```
 
 ```typescript src/index.ts
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import type { ApiResponse } from 'shared/dist'
+import type { ApiResponse } from '@repo/shared'
 
 const app = new Hono()
 
@@ -60,111 +69,122 @@ app.get('/', (c) => {
 })
 
 app.get('/hello', async (c) => {
-
   const data: ApiResponse = {
     message: "Hello BHVR!",
     success: true
   }
-
   return c.json(data, { status: 200 })
 })
 
 export default app
+export type AppType = typeof app
 ```
 
 If you wanted to add a database to Hono you can do so with a multitude of Typescript libraries like [Supabase](https://supabase.com), or ORMs like [Drizzle](https://orm.drizzle.team/docs/get-started) or [Prisma](https://www.prisma.io/orm)
 
 ### Client
 
-bhvr uses Vite + React Typescript template, which means you can build your frontend just as you would with any other React app. This makes it flexible to add UI components like [shadcn/ui](https://ui.shadcn.com) or routing using [React Router](https://reactrouter.com/start/declarative/installation).
+bhvr uses Vite + React + TypeScript with Tailwind CSS for styling and shadcn/ui components. The client includes React Router for routing and TanStack Query for API state management.
 
 ```
-client
+apps/client/
+├── components.json       # shadcn/ui configuration
 ├── eslint.config.js
 ├── index.html
 ├── package.json
-├── public
-│   └── vite.svg
-├── README.md
-├── src
-│   ├── App.css
-│   ├── App.tsx
-│   ├── assets
-│   ├── index.css
-│   ├── main.tsx
-│   └── vite-env.d.ts
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-└── vite.config.ts
+├── public/
+│   └── assets/
+├── src/
+│   ├── components/       # React components including shadcn/ui
+│   │   ├── ui/          # shadcn/ui base components
+│   │   └── Home.tsx     # Main home component
+│   ├── lib/             # Utility functions
+│   ├── assets/          # Static assets
+│   ├── App.tsx          # App router setup
+│   ├── main.tsx         # App entry point
+│   ├── index.css        # Tailwind CSS imports and custom styles
+│   └── vite-env.d.ts
+├── tsconfig.*.json      # TypeScript configurations
+└── vite.config.ts       # Vite config with Tailwind plugin
 ```
 
-```typescript src/App.tsx
-import { useState } from 'react'
-import beaver from './assets/beaver.svg'
-import { ApiResponse } from 'shared'
-import './App.css'
+```typescript src/components/Home.tsx
+import { useState } from "react"
+import beaver from "@/assets/beaver.svg"
+import { Button } from "@/components/ui/button"
+import { hcWithType } from "server/dist/client"
+import { useMutation } from "@tanstack/react-query"
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
+const client = hcWithType(SERVER_URL)
 
-function App() {
-  const [data, setData] = useState<ApiResponse | undefined>()
+type ResponseType = Awaited<ReturnType<typeof client.hello.$get>>
 
-  async function sendRequest() {
-    try {
-      const req = await fetch(`${SERVER_URL}/hello`)
-      const res: ApiResponse = await req.json()
-      setData(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+function Home() {
+  const [data, setData] = useState<
+    Awaited<ReturnType<ResponseType["json"]>> | undefined
+  >()
+
+  const { mutate: sendRequest } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await client.hello.$get()
+        if (!res.ok) {
+          console.log("Error fetching data")
+          return
+        }
+        const data = await res.json()
+        setData(data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  })
 
   return (
-    <>
-      <div>
-        <a href="https://github.com/stevedylandev/bhvr" target="_blank">
-          <img src={beaver} className="logo" alt="beaver logo" />
-        </a>
-      </div>
-      <h1>bhvr</h1>
-      <h2>Bun + Hono + Vite + React</h2>
+    <div className="max-w-xl mx-auto flex flex-col gap-6 items-center justify-center min-h-screen">
+      <a href="https://github.com/stevedylandev/bhvr" target="_blank" rel="noopener">
+        <img src={beaver} className="w-16 h-16 cursor-pointer" alt="beaver logo" />
+      </a>
+      <h1 className="text-5xl font-black">bhvr</h1>
+      <h2 className="text-2xl font-bold">Bun + Hono + Vite + React</h2>
       <p>A typesafe fullstack monorepo</p>
-      <div className="card">
-        <button onClick={sendRequest}>
-          Call API
-        </button>
-        {data && (
-          <pre className='response'>
-            <code>
+      <div className="flex items-center gap-4">
+        <Button onClick={() => sendRequest()}>Call API</Button>
+        <Button variant="secondary" asChild>
+          <a target="_blank" href="https://bhvr.dev" rel="noopener">Docs</a>
+        </Button>
+      </div>
+      {data && (
+        <pre className="bg-gray-100 p-4 rounded-md">
+          <code>
             Message: {data.message} <br />
             Success: {data.success.toString()}
-            </code>
-          </pre>
-        )}
-      </div>
-      <p className="read-the-docs">
-        Click the beaver to learn more
-      </p>
-    </>
+          </code>
+        </pre>
+      )}
+    </div>
   )
 }
 
-export default App
+export default Home
 ```
 
-### Shared
+### Shared Packages
 
-The Shared package is used for anything you want to share between the Server and Client. This could be types or libraries that you use in both environments.
+The packages directory contains shared code used across the monorepo:
 
 ```
-shared
-├── package.json
-├── src
-│   ├── index.ts
-│   └── types
-│       └── index.ts
-└── tsconfig.json
+packages/
+├── shared/               # Shared types and utilities
+│   ├── src/
+│   │   ├── index.ts
+│   │   └── types/
+│   ├── package.json
+│   └── tsconfig.json
+├── ui/                   # Shared UI components
+├── eslint-config/        # Shared ESLint configuration
+└── typescript-config/    # Shared TypeScript configuration
 ```
 
 Inside the `src/index.ts` we export any of our code from the folders so it's usable in other parts of the monorepo
@@ -176,7 +196,7 @@ export * from "./types"
 By running `bun run dev` or `bun run build` it will compile and export the packages from `shared` so it can be used in either `client` or `server`
 
 ```typescript
-import { ApiResponse } from 'shared'
+import { ApiResponse } from '@repo/shared'
 ```
 
 ## Getting Started
@@ -291,7 +311,7 @@ Deplying each piece is very versatile and can be done numerous ways, and explora
 Types are automatically shared between the client and server thanks to the shared package and TypeScript path aliases. You can import them in your code using:
 
 ```typescript
-import { ApiResponse } from 'shared/types';
+import { ApiResponse } from '@repo/shared';
 ```
 
 ## Learn More
@@ -302,3 +322,6 @@ import { ApiResponse } from 'shared/types';
 - [Hono Documentation](https://hono.dev/docs)
 - [Turbo Documentation](https://turbo.build/docs)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com)
+- [TanStack Query Documentation](https://tanstack.com/query/latest)
