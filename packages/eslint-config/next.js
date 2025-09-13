@@ -12,7 +12,7 @@ import { config as baseConfig } from "./base.js";
 export const nextJsConfig = [
   ...baseConfig,
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     ...pluginReact.configs.flat.recommended,
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -31,7 +31,7 @@ export const nextJsConfig = [
     },
   },
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     plugins: {
       "react-hooks": pluginReactHooks,
     },

@@ -6,13 +6,13 @@ import { config as baseConfig } from "./base.js";
 /**
  * A custom ESLint configuration for libraries that use React.
  *
- * @type {import("eslint").Linter.Config[]} 
+ * @type {import("eslint").Linter.Config[]}
  */
 
 export const config = [
   ...baseConfig,
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     ...pluginReact.configs.flat.recommended,
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
