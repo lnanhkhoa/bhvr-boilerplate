@@ -40,8 +40,6 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
-    "@react-email/components": "^0.5.3",
-    "@react-email/render": "^1.2.3",
     "drizzle-orm": "^0.44.5",
     "hono": "^4.9.6",
     "react": "^19.1.1",
