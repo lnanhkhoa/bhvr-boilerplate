@@ -5,7 +5,7 @@ import {
   setupCorsMiddleware,
   setupScalarDocumentation,
   createDevelopmentScalarConfig,
-} from "./middleware";
+} from "./middlewares";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
 import healthRoutes from "./routes/health";

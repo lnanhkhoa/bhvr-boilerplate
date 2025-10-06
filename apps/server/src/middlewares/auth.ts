@@ -2,6 +2,7 @@ import type { Context, Next } from "hono";
 import { auth } from "../lib/auth";
 import type { Session, User } from "../lib/auth";
 import { createErrorResponse } from "@repo/shared";
+import { IS_DEV } from "@/configs/env";
 
 declare module "hono" {
   interface ContextVariableMap {
@@ -19,13 +20,9 @@ export async function authMiddleware(c: Context, next: Next) {
       return c.json(createErrorResponse("Authentication required", "Missing or invalid Authorization header"), 401);
     }
 
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-    if (!session) {
-      return c.json(createErrorResponse("Invalid or expired session", "Please sign in again"), 401);
-    }
+    if (!session) return c.json(createErrorResponse("Invalid or expired session", "Please sign in again"), 401);
 
     c.set("user", session.user);
     c.set("session", session as Session);
@@ -33,19 +30,13 @@ export async function authMiddleware(c: Context, next: Next) {
     await next();
   } catch (error) {
     console.error("Auth middleware error:", error);
-    return c.json(
-      createErrorResponse("Authentication failed", process.env.NODE_ENV === "development" ? error : undefined),
-      401,
-    );
+    return c.json(createErrorResponse("Authentication failed", IS_DEV ? error : undefined), 401);
   }
 }
 
 export async function optionalAuthMiddleware(c: Context, next: Next) {
   try {
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
-
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
     if (session) {
       c.set("user", session.user);
       c.set("session", session as Session);

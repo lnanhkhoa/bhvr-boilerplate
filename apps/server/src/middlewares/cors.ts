@@ -1,5 +1,6 @@
 import { cors } from "hono/cors";
 import type { OpenAPIHono } from "@hono/zod-openapi";
+import { API_URL, APP_URL, PRODUCTION_CLIENT_URL, STAGING_CLIENT_URL } from "@/configs/env";
 
 /**
  * CORS configuration for peaceful cross-origin communication
@@ -25,11 +26,7 @@ export interface CorsConfig {
  */
 export function createCorsMiddleware(config?: CorsConfig) {
   const defaultConfig: CorsConfig = {
-    origins: [
-      process.env.APP_URL || "http://localhost:5173",
-      process.env.CLIENT_URL || "http://localhost:5173",
-      "http://localhost:3000", // Server itself
-    ],
+    origins: [APP_URL, API_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
@@ -70,10 +67,7 @@ export function setupCorsMiddleware(app: OpenAPIHono, config?: CorsConfig) {
  */
 export function createProductionCorsConfig(): CorsConfig {
   return {
-    origins: [
-      process.env.PRODUCTION_CLIENT_URL || "https://your-app.com",
-      process.env.STAGING_CLIENT_URL || "https://staging.your-app.com",
-    ].filter(Boolean),
+    origins: [PRODUCTION_CLIENT_URL, STAGING_CLIENT_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],

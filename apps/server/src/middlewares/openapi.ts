@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
 import type { Context } from "hono";
+import { API_URL, IS_DEV, PRODUCTION_API_URL, STAGING_API_URL } from "@/configs/env";
 
 /**
  * Creates an OpenAPI-enabled Hono app with proper validation and error handling
@@ -47,11 +48,15 @@ export function setupOpenAPIDocumentation(app: OpenAPIHono) {
     },
     servers: [
       {
-        url: process.env.API_URL || "http://localhost:3000",
+        url: API_URL,
         description: "Development server - The beaver's peaceful workshop",
       },
       {
-        url: process.env.PRODUCTION_API_URL || "https://api.example.com",
+        url: STAGING_API_URL,
+        description: "Staging server - The beaver's testing dam",
+      },
+      {
+        url: PRODUCTION_API_URL,
         description: "Production server - The beaver's finished dam",
       },
     ],
@@ -125,7 +130,7 @@ export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
     }
 
     // Development error responses with full details
-    if (process.env.NODE_ENV === "development") {
+    if (IS_DEV) {
       return c.json(
         {
           success: false,

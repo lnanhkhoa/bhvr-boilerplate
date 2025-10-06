@@ -3,8 +3,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@repo
 import { Input } from "@repo/ui/components/shadcn/input";
 import { Button } from "@repo/ui/components/shadcn/button";
 import { cn } from "@repo/ui/lib/utils";
+import { useNavigate } from "react-router";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-6 items-center justify-center min-h-screen">
       <a href="https://github.com/stevedylandev/bhvr" target="_blank" rel="noopener">
@@ -16,6 +18,9 @@ export default function HomePage() {
       <div className="flex items-center gap-4">
         <Button variant="secondary" onClick={() => window.open("https://bhvr.dev", "_blank")}>
           Docs
+        </Button>
+        <Button variant="secondary" onClick={() => navigate("/login")}>
+          Login
         </Button>
       </div>
 
@@ -46,4 +51,3 @@ export default function HomePage() {
     </div>
   );
 }
-
