@@ -1,19 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@repo/ui/components/theme-provider.tsx";
+import { ThemeProvider } from "@repo/ui/components/theme-provider";
 import { BrowserRouter } from "react-router";
-import App from "./App.tsx";
-import "./index.css";
+import App from "./routes/app-routes";
+
+import "./styles/global.css";
 
 const queryClient = new QueryClient();
 
-const rootElement = document.getElementById("root");
-
-if (!rootElement) {
-  throw new Error("Root element not found. Check if it's in your index.html or if the id is correct.");
-}
-createRoot(rootElement).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
