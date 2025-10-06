@@ -1,32 +1,16 @@
 import React from "react";
-import {
-  Html,
-  Head,
-  Body,
-  Container,
-  Text,
-  Link,
-  Section,
-  Img,
-} from "@react-email/components";
+import { Html, Head, Body, Container, Text, Link, Section, Img } from "@react-email/components";
 
 interface BaseEmailProps {
   children: React.ReactNode;
   previewText?: string;
 }
 
-export const BaseEmail: React.FC<BaseEmailProps> = ({
-  children,
-  previewText,
-}) => {
+export const BaseEmail: React.FC<BaseEmailProps> = ({ children, previewText }) => {
   return (
     <Html>
       <Head />
-      {previewText && (
-        <Text style={{ display: "none", overflow: "hidden", lineHeight: 1 }}>
-          {previewText}
-        </Text>
-      )}
+      {previewText && <Text style={{ display: "none", overflow: "hidden", lineHeight: 1 }}>{previewText}</Text>}
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
@@ -35,8 +19,7 @@ export const BaseEmail: React.FC<BaseEmailProps> = ({
           {children}
           <Section style={footer}>
             <Text style={footerText}>
-              This email was sent from BHVR. If you didn't expect this email,
-              you can safely ignore it.
+              This email was sent from BHVR. If you didn't expect this email, you can safely ignore it.
             </Text>
           </Section>
         </Container>

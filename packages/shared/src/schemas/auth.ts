@@ -1,12 +1,5 @@
 import { z } from "zod";
-import { 
-  EmailSchema, 
-  PasswordSchema, 
-  NameSchema, 
-  IdSchema,
-  SuccessResponseSchema,
-  DateTimeSchema 
-} from "./common.js";
+import { EmailSchema, PasswordSchema, NameSchema, IdSchema, SuccessResponseSchema, DateTimeSchema } from "./common.js";
 import { UserSchema } from "./user.js";
 
 // Sign up request

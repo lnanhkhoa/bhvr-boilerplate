@@ -7,49 +7,38 @@ interface PasswordResetEmailProps {
   resetUrl: string;
 }
 
-export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
-  userName = "User",
-  resetUrl,
-}) => {
+export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({ userName = "User", resetUrl }) => {
   return (
     <BaseEmail previewText="Reset your BHVR password">
       <Section style={content}>
         <Text style={heading}>Password Reset Request</Text>
-        
+
+        <Text style={paragraph}>Hi {userName},</Text>
+
         <Text style={paragraph}>
-          Hi {userName},
+          We received a request to reset your password for your BHVR account. If you made this request, click the button
+          below to set a new password.
         </Text>
-        
-        <Text style={paragraph}>
-          We received a request to reset your password for your BHVR account.
-          If you made this request, click the button below to set a new password.
-        </Text>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={resetUrl}>
             Reset Password
           </Button>
         </Section>
-        
+
+        <Text style={paragraph}>Or copy and paste this link into your browser:</Text>
+
+        <Text style={linkText}>{resetUrl}</Text>
+
+        <Text style={warningText}>⚠️ This link will expire in 1 hour for security reasons.</Text>
+
         <Text style={paragraph}>
-          Or copy and paste this link into your browser:
+          If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
         </Text>
-        
-        <Text style={linkText}>
-          {resetUrl}
-        </Text>
-        
-        <Text style={warningText}>
-          ⚠️ This link will expire in 1 hour for security reasons.
-        </Text>
-        
+
         <Text style={paragraph}>
-          If you didn't request a password reset, you can safely ignore this
-          email. Your password will remain unchanged.
-        </Text>
-        
-        <Text style={paragraph}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The BHVR Team
         </Text>
       </Section>

@@ -12,7 +12,7 @@ export function createOpenAPIApp() {
             error: "Validation failed",
             details: result.error.flatten(),
           },
-          400
+          400,
         );
       }
     },
@@ -40,13 +40,13 @@ export function createOpenAPIApp() {
     swaggerUI({
       url: "/doc/openapi.json",
       persistAuthorization: true,
-    })
+    }),
   );
 
   // Global error handler for OpenAPI validation
   app.onError((err, c) => {
     console.error("API Error:", err);
-    
+
     if (err.name === "ZodError") {
       return c.json(
         {
@@ -54,7 +54,7 @@ export function createOpenAPIApp() {
           error: "Validation failed",
           details: JSON.parse(err.message),
         },
-        400
+        400,
       );
     }
 
@@ -65,7 +65,7 @@ export function createOpenAPIApp() {
           error: err.message,
           stack: err.stack,
         },
-        500
+        500,
       );
     }
 
@@ -74,7 +74,7 @@ export function createOpenAPIApp() {
         success: false,
         error: "Internal server error",
       },
-      500
+      500,
     );
   });
 

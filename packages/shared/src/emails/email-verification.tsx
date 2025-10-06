@@ -7,55 +7,38 @@ interface EmailVerificationProps {
   verificationUrl: string;
 }
 
-export const EmailVerificationEmail: React.FC<EmailVerificationProps> = ({
-  userName = "User",
-  verificationUrl,
-}) => {
+export const EmailVerificationEmail: React.FC<EmailVerificationProps> = ({ userName = "User", verificationUrl }) => {
   return (
     <BaseEmail previewText="Verify your BHVR email address">
       <Section style={content}>
         <Text style={heading}>Verify Your Email</Text>
-        
+
+        <Text style={paragraph}>Hi {userName},</Text>
+
         <Text style={paragraph}>
-          Hi {userName},
+          Thank you for signing up with BHVR! To complete your account setup and ensure you receive important updates,
+          please verify your email address.
         </Text>
-        
-        <Text style={paragraph}>
-          Thank you for signing up with BHVR! To complete your account setup
-          and ensure you receive important updates, please verify your email
-          address.
-        </Text>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={verificationUrl}>
             Verify Email Address
           </Button>
         </Section>
-        
+
+        <Text style={paragraph}>Or copy and paste this link into your browser:</Text>
+
+        <Text style={linkText}>{verificationUrl}</Text>
+
+        <Text style={infoText}>✅ This verification link will expire in 24 hours.</Text>
+
+        <Text style={paragraph}>Once verified, you'll have full access to your account and all features.</Text>
+
+        <Text style={paragraph}>If you didn't create an account with BHVR, you can safely ignore this email.</Text>
+
         <Text style={paragraph}>
-          Or copy and paste this link into your browser:
-        </Text>
-        
-        <Text style={linkText}>
-          {verificationUrl}
-        </Text>
-        
-        <Text style={infoText}>
-          ✅ This verification link will expire in 24 hours.
-        </Text>
-        
-        <Text style={paragraph}>
-          Once verified, you'll have full access to your account and all
-          features.
-        </Text>
-        
-        <Text style={paragraph}>
-          If you didn't create an account with BHVR, you can safely ignore this
-          email.
-        </Text>
-        
-        <Text style={paragraph}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The BHVR Team
         </Text>
       </Section>

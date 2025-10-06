@@ -9,16 +9,19 @@
   "scripts": {
     "dev": "turbo dev",
     "dev:client": "turbo dev --filter=client",
+    "dev:showcase": "turbo dev --filter=showcase",
     "dev:server": "turbo dev --filter=server",
     "build": "turbo build",
+    "build:ui": "turbo build --filter=@repo/ui",
+    "build:packages": "turbo build --filter=@repo/*",
+    "build:showcase": "turbo build --filter=showcase",
     "build:client": "turbo build --filter=client",
     "build:server": "turbo build --filter=server",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "postinstall": "turbo build --filter=@repo/shared"
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "keywords": [
     "bun",
@@ -45,7 +48,7 @@
     "react": "^19.1.1",
     "resend": "^6.0.3"
   },
-  "packageManager": "bun@1.2.4",
+  "packageManager": "bun@1.2.21",
   "workspaces": [
     "apps/*",
     "packages/*"

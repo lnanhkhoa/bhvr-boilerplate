@@ -7,42 +7,33 @@ interface WelcomeEmailProps {
   loginUrl: string;
 }
 
-export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
-  userName = "User",
-  loginUrl,
-}) => {
+export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({ userName = "User", loginUrl }) => {
   return (
     <BaseEmail previewText={`Welcome to BHVR, ${userName}!`}>
       <Section style={content}>
         <Text style={heading}>Welcome to BHVR!</Text>
-        
+
+        <Text style={paragraph}>Hi {userName},</Text>
+
         <Text style={paragraph}>
-          Hi {userName},
+          Welcome to BHVR! Your account has been successfully created. We're excited to have you on board.
         </Text>
-        
-        <Text style={paragraph}>
-          Welcome to BHVR! Your account has been successfully created. We're
-          excited to have you on board.
-        </Text>
-        
-        <Text style={paragraph}>
-          You can now access your account and explore all the features we have
-          to offer.
-        </Text>
-        
+
+        <Text style={paragraph}>You can now access your account and explore all the features we have to offer.</Text>
+
         <Section style={buttonContainer}>
           <Button style={button} href={loginUrl}>
             Get Started
           </Button>
         </Section>
-        
+
         <Text style={paragraph}>
-          If you have any questions or need assistance, don't hesitate to reach
-          out to our support team.
+          If you have any questions or need assistance, don't hesitate to reach out to our support team.
         </Text>
-        
+
         <Text style={paragraph}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The BHVR Team
         </Text>
       </Section>

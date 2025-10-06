@@ -3,14 +3,18 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import { sendPasswordResetEmail, sendWelcomeEmail, sendEmailVerificationEmail } from "./email";
 
-
-
 // Log auth configuration on startup
 console.log("🔐 Auth Configuration:");
 console.log("  📧 Email verification:", process.env.RESEND_API_KEY ? "enabled" : "disabled (dev mode)");
 console.log("  🔑 Auto sign-in:", !process.env.RESEND_API_KEY ? "enabled (dev mode)" : "disabled");
-console.log("  🌐 Google OAuth:", Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) ? "enabled" : "disabled");
-console.log("  🐙 GitHub OAuth:", Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) ? "enabled" : "disabled");
+console.log(
+  "  🌐 Google OAuth:",
+  Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) ? "enabled" : "disabled",
+);
+console.log(
+  "  🐙 GitHub OAuth:",
+  Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) ? "enabled" : "disabled",
+);
 
 const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -24,21 +28,13 @@ const auth = betterAuth({
     autoSignIn: !process.env.RESEND_API_KEY, // Auto sign-in when email is disabled
     requireEmailVerification: Boolean(process.env.RESEND_API_KEY),
     sendResetPassword: async ({ user, url }: { user: any; url: string }) => {
-      const result = await sendPasswordResetEmail(
-        user.email,
-        url,
-        user.name || undefined
-      );
+      const result = await sendPasswordResetEmail(user.email, url, user.name || undefined);
       if (!result.success && process.env.RESEND_API_KEY) {
         throw new Error(result.error || "Failed to send password reset email");
       }
     },
     sendVerificationEmail: async ({ user, url }: { user: any; url: string }) => {
-      const result = await sendEmailVerificationEmail(
-        user.email,
-        url,
-        user.name || undefined
-      );
+      const result = await sendEmailVerificationEmail(user.email, url, user.name || undefined);
       if (!result.success && process.env.RESEND_API_KEY) {
         throw new Error(result.error || "Failed to send verification email");
       }
@@ -81,10 +77,7 @@ const auth = betterAuth({
         },
         handler: async (ctx: any) => {
           if (ctx.context.returned?.user) {
-            await sendWelcomeEmail(
-              ctx.context.returned.user.email,
-              ctx.context.returned.user.name || undefined
-            );
+            await sendWelcomeEmail(ctx.context.returned.user.email, ctx.context.returned.user.name || undefined);
           }
         },
       },

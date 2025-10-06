@@ -1,13 +1,13 @@
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import { 
-  UserProfileResponseSchema, 
+import {
+  UserProfileResponseSchema,
   UpdateUserProfileSchema,
   UpdateProfileResponseSchema,
   StandardErrorResponses,
   ApiTags,
   createSuccessResponse,
   createErrorResponse,
-  z
+  z,
 } from "@repo/shared";
 
 const userRoutes = new OpenAPIHono();
@@ -36,25 +36,25 @@ userRoutes.openapi(getUserProfileRoute, async (c) => {
   // For now, we'll simulate a user response to fix TypeScript issues
   const user = {
     id: "user-123",
-    email: "user@example.com", 
+    email: "user@example.com",
     name: "John Doe",
     image: null,
     emailVerified: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
-  
+
   return c.json({
     success: true as const,
     data: user,
-    message: "Profile retrieved successfully"
+    message: "Profile retrieved successfully",
   });
 });
 
-// Update user profile route  
+// Update user profile route
 const updateUserProfileRoute = createRoute({
   method: "put",
-  path: "/profile", 
+  path: "/profile",
   tags: [ApiTags.USER],
   summary: "Update user profile",
   description: "Update the authenticated user's profile information",
@@ -87,7 +87,7 @@ userRoutes.openapi(updateUserProfileRoute, async (c) => {
   // For now, we'll simulate the response
   const updatedUser = {
     id: "user-123",
-    email: "user@example.com", 
+    email: "user@example.com",
     name: updateData.name || "John Doe",
     image: updateData.image || null,
     emailVerified: true,
@@ -98,7 +98,7 @@ userRoutes.openapi(updateUserProfileRoute, async (c) => {
   return c.json({
     success: true as const,
     data: updatedUser,
-    message: "Profile updated successfully" as const
+    message: "Profile updated successfully" as const,
   });
 });
 

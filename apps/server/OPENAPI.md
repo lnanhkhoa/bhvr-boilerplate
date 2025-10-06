@@ -11,54 +11,68 @@ The BHVR API now includes full OpenAPI 3.0 integration with automatic documentat
 ✅ **Type-safe validation** using Zod schemas  
 ✅ **Consistent error responses** across all endpoints  
 ✅ **Standardized response formats** for all API operations  
-✅ **Development-friendly error details** in development mode  
+✅ **Development-friendly error details** in development mode
 
 ## Accessing API Documentation
 
 ### Swagger UI
+
 Visit `http://localhost:3000/doc` to access the interactive API documentation where you can:
+
 - Browse all available endpoints
 - View request/response schemas
 - Test endpoints directly in the browser
 - See authentication requirements
 
 ### OpenAPI JSON
+
 The raw OpenAPI specification is available at `http://localhost:3000/doc/openapi.json`
 
 ## API Structure
 
 ### Base URL
+
 - **Development**: `http://localhost:3000`
 - **Production**: Set via `API_URL` environment variable
 
 ### Authentication
+
 Most endpoints require Bearer token authentication:
+
 ```
 Authorization: Bearer <your-session-token>
 ```
 
 ### Response Format
+
 All responses follow a consistent format:
 
 **Success Response:**
+
 ```json
 {
   "success": true,
-  "data": { /* response data */ },
+  "data": {
+    /* response data */
+  },
   "message": "Success message"
 }
 ```
 
 **Error Response:**
+
 ```json
 {
   "success": false,
   "error": "Error message",
-  "details": { /* additional error details */ }
+  "details": {
+    /* additional error details */
+  }
 }
 ```
 
 **Validation Error Response:**
+
 ```json
 {
   "success": false,
@@ -75,12 +89,14 @@ All responses follow a consistent format:
 ## Available Endpoints
 
 ### Health & Status
+
 - `GET /` - Health check
 - `GET /hello` - Simple hello endpoint
 
 ### Authentication
+
 - `POST /api/auth/sign-up` - User registration
-- `POST /api/auth/sign-in` - User login  
+- `POST /api/auth/sign-in` - User login
 - `POST /api/auth/sign-out` - User logout
 - `POST /api/auth/forgot-password` - Password reset request
 - `POST /api/auth/reset-password` - Password reset confirmation
@@ -89,6 +105,7 @@ All responses follow a consistent format:
 - `GET /api/auth/sign-in/github` - GitHub OAuth
 
 ### User Management
+
 - `GET /api/user/profile` - Get user profile (authenticated)
 - `PUT /api/user/profile` - Update user profile (authenticated)
 
@@ -97,7 +114,7 @@ All responses follow a consistent format:
 ### Creating New Routes
 
 1. **Define Zod schemas** in `packages/shared/src/schemas/`
-2. **Create route definition** using `createRoute()`  
+2. **Create route definition** using `createRoute()`
 3. **Implement route handler** with proper validation
 4. **Add route to app** using `app.openapi()`
 
@@ -154,10 +171,10 @@ const createItemRoute = createRoute({
 // Implement route handler
 app.openapi(createItemRoute, async (c) => {
   const data = c.req.valid("json");
-  
+
   // Your business logic here
   const item = await createItem(data);
-  
+
   return c.json(createSuccessResponse(item, "Item created successfully"), 201);
 });
 ```
@@ -165,22 +182,25 @@ app.openapi(createItemRoute, async (c) => {
 ### Error Handling
 
 The system provides automatic error handling for:
+
 - **Validation errors**: Zod schema validation failures
-- **Authentication errors**: Missing or invalid tokens  
+- **Authentication errors**: Missing or invalid tokens
 - **Authorization errors**: Insufficient permissions
 - **Server errors**: Unexpected application errors
 
 ### Schema Organization
 
 Schemas are organized in `packages/shared/src/schemas/`:
+
 - `common.ts` - Shared utilities and base schemas
-- `auth.ts` - Authentication-related schemas  
+- `auth.ts` - Authentication-related schemas
 - `user.ts` - User management schemas
 - `index.ts` - Re-exports all schemas
 
 ### Type Safety
 
 All request/response types are automatically inferred from Zod schemas:
+
 ```typescript
 import type { UserData, UpdateUserProfileData } from "@repo/shared";
 
@@ -199,11 +219,13 @@ No additional environment variables are required for OpenAPI functionality. The 
 ## Testing
 
 ### Using Swagger UI
+
 1. Visit `http://localhost:3000/doc`
 2. Click "Authorize" to add your Bearer token
 3. Test any endpoint directly in the browser
 
 ### Programmatic Testing
+
 ```bash
 # Health check
 curl http://localhost:3000/
@@ -223,26 +245,30 @@ curl -X PUT \
 ## Benefits
 
 ### For Developers
+
 - **Type safety**: Catch errors at compile time
 - **Auto-completion**: Full IntelliSense support
 - **Documentation**: Always up-to-date API docs
 - **Testing**: Built-in API testing interface
 
-### For API Consumers  
+### For API Consumers
+
 - **Clear documentation**: Interactive API explorer
 - **Predictable responses**: Consistent response format
 - **Error handling**: Standardized error messages
 - **Authentication**: Clear auth requirements
 
 ### For Teams
+
 - **API-first development**: Design APIs before implementation
-- **Contract testing**: Validate API contracts automatically  
+- **Contract testing**: Validate API contracts automatically
 - **Client generation**: Future-ready for auto-generated SDKs
 - **Maintenance**: Self-documenting API changes
 
 ## Future Enhancements
 
 The OpenAPI integration provides a foundation for:
+
 - **Client SDK generation** for TypeScript, Python, etc.
 - **Contract testing** with tools like Pact
 - **API versioning** and backwards compatibility
@@ -252,7 +278,8 @@ The OpenAPI integration provides a foundation for:
 ## Migration Notes
 
 Existing endpoints have been converted to use OpenAPI while maintaining backward compatibility. The main changes:
-- Standardized response formats  
+
+- Standardized response formats
 - Enhanced error messages with details
 - Automatic request validation
 - Interactive documentation
