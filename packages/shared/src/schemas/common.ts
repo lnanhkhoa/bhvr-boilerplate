@@ -103,7 +103,7 @@ export const StandardErrorResponses = {
 // Common OpenAPI tags
 export const ApiTags = {
   HEALTH: "Health",
-  AUTH: "Authentication", 
+  AUTH: "Authentication",
   USER: "User",
   ADMIN: "Admin",
 } as const;
@@ -117,7 +117,7 @@ export function createSuccessResponse<T>(data: T, message?: string) {
   };
 }
 
-// Helper function to create standardized error responses  
+// Helper function to create standardized error responses
 export function createErrorResponse(error: string, details?: unknown) {
   return {
     success: false as const,

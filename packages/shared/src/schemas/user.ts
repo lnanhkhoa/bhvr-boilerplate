@@ -1,11 +1,5 @@
 import { z } from "zod";
-import { 
-  IdSchema, 
-  EmailSchema, 
-  NameSchema, 
-  DateTimeSchema,
-  SuccessResponseSchema 
-} from "./common.js";
+import { IdSchema, EmailSchema, NameSchema, DateTimeSchema, SuccessResponseSchema } from "./common.js";
 
 // Base User schema
 export const UserSchema = z.object({
@@ -34,7 +28,7 @@ export const UserProfileResponseSchema = SuccessResponseSchema.extend({
   data: UserSchema,
 });
 
-// Update profile response  
+// Update profile response
 export const UpdateProfileResponseSchema = SuccessResponseSchema.extend({
   data: UserSchema,
   message: z.literal("Profile updated successfully"),
@@ -44,15 +38,17 @@ export const UpdateProfileResponseSchema = SuccessResponseSchema.extend({
 export const UserPreferencesSchema = z.object({
   theme: z.enum(["light", "dark", "system"]).default("system"),
   language: z.string().default("en"),
-  notifications: z.object({
-    email: z.boolean().default(true),
-    push: z.boolean().default(true),
-    marketing: z.boolean().default(false),
-  }).default(() => ({
-    email: true,
-    push: true,
-    marketing: false,
-  })),
+  notifications: z
+    .object({
+      email: z.boolean().default(true),
+      push: z.boolean().default(true),
+      marketing: z.boolean().default(false),
+    })
+    .default(() => ({
+      email: true,
+      push: true,
+      marketing: false,
+    })),
 });
 
 // Type exports (with Schema suffix to avoid conflicts)

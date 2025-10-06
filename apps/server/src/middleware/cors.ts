@@ -41,12 +41,7 @@ export function createCorsMiddleware(config?: CorsConfig) {
       "Access-Control-Request-Method",
       "Access-Control-Request-Headers",
     ],
-    exposedHeaders: [
-      "X-Total-Count",
-      "X-Page-Count",
-      "X-Current-Page",
-      "X-Per-Page",
-    ],
+    exposedHeaders: ["X-Total-Count", "X-Page-Count", "X-Current-Page", "X-Per-Page"],
     maxAge: 86400, // 24 hours - peaceful caching
   };
 
@@ -81,13 +76,7 @@ export function createProductionCorsConfig(): CorsConfig {
     ].filter(Boolean),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "Origin",
-    ],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
     exposedHeaders: ["X-Total-Count"],
     maxAge: 3600, // 1 hour for production
   };

@@ -51,4 +51,4 @@ bun.lockb
 # Build Outputs
 out
 build
-dist
+dist/*

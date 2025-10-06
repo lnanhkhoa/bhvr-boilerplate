@@ -31,11 +31,11 @@ export function setupScalarDocumentation(app: OpenAPIHono, config?: ScalarConfig
 
   // Primary documentation endpoint - the beaver's main lodge
   app.get("/scalar", scalarMiddleware);
-  
+
   // Alternative endpoints for different access patterns
   app.get("/docs", scalarMiddleware);
   app.get("/api-docs", scalarMiddleware);
-  
+
   // Root documentation redirect for peaceful navigation
   app.get("/documentation", (c) => {
     return c.redirect("/scalar", 302);

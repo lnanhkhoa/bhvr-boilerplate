@@ -1,10 +1,10 @@
-import { 
-  createOpenAPIApp, 
-  setupOpenAPIDocumentation, 
+import {
+  createOpenAPIApp,
+  setupOpenAPIDocumentation,
   setupOpenAPIErrorHandling,
   setupCorsMiddleware,
   setupScalarDocumentation,
-  createDevelopmentScalarConfig
+  createDevelopmentScalarConfig,
 } from "./middleware";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";

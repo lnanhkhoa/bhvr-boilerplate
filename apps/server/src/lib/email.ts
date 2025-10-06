@@ -1,10 +1,6 @@
 import { Resend } from "resend";
 import { render } from "@react-email/render";
-import {
-  WelcomeEmail,
-  PasswordResetEmail,
-  EmailVerificationEmail,
-} from "@repo/shared";
+import { WelcomeEmail, PasswordResetEmail, EmailVerificationEmail } from "@repo/shared";
 
 let resend: Resend | null = null;
 
@@ -29,7 +25,7 @@ export interface SendEmailOptions {
 
 export const sendEmail = async (options: SendEmailOptions) => {
   const client = getResendClient();
-  
+
   if (!client) {
     console.log("📧 Email would be sent:", {
       to: options.to,
@@ -62,19 +58,15 @@ export const sendEmail = async (options: SendEmailOptions) => {
   }
 };
 
-export const sendWelcomeEmail = async (
-  to: string,
-  userName?: string,
-  loginUrl?: string
-) => {
+export const sendWelcomeEmail = async (to: string, userName?: string, loginUrl?: string) => {
   const defaultLoginUrl = `${process.env.APP_URL || "http://localhost:5173"}/login`;
-  
-  const html = await render(
+
+  const html = (await render(
     WelcomeEmail({
       userName,
       loginUrl: loginUrl || defaultLoginUrl,
-    }) as any
-  ) as unknown as string;
+    }) as any,
+  )) as unknown as string;
 
   return sendEmail({
     to,
@@ -83,17 +75,13 @@ export const sendWelcomeEmail = async (
   });
 };
 
-export const sendPasswordResetEmail = async (
-  to: string,
-  resetUrl: string,
-  userName?: string
-) => {
-  const html = await render(
+export const sendPasswordResetEmail = async (to: string, resetUrl: string, userName?: string) => {
+  const html = (await render(
     PasswordResetEmail({
       userName,
       resetUrl,
-    }) as any
-  ) as unknown as string;
+    }) as any,
+  )) as unknown as string;
 
   return sendEmail({
     to,
@@ -102,17 +90,13 @@ export const sendPasswordResetEmail = async (
   });
 };
 
-export const sendEmailVerificationEmail = async (
-  to: string,
-  verificationUrl: string,
-  userName?: string
-) => {
-  const html = await render(
+export const sendEmailVerificationEmail = async (to: string, verificationUrl: string, userName?: string) => {
+  const html = (await render(
     EmailVerificationEmail({
       userName,
       verificationUrl,
-    }) as any
-  ) as unknown as string;
+    }) as any,
+  )) as unknown as string;
 
   return sendEmail({
     to,

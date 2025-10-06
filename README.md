@@ -111,7 +111,7 @@ apps/client/
 ```typescript src/components/Home.tsx
 import { useState } from "react"
 import beaver from "@/assets/beaver.svg"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn/button"
 import { hcWithType } from "server/dist/client"
 import { useMutation } from "@tanstack/react-query"
 

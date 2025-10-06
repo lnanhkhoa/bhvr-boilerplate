@@ -16,13 +16,7 @@ export async function authMiddleware(c: Context, next: Next) {
     const sessionToken = authHeader?.replace("Bearer ", "");
 
     if (!authHeader || !sessionToken) {
-      return c.json(
-        createErrorResponse(
-          "Authentication required", 
-          "Missing or invalid Authorization header"
-        ), 
-        401
-      );
+      return c.json(createErrorResponse("Authentication required", "Missing or invalid Authorization header"), 401);
     }
 
     const session = await auth.api.getSession({
@@ -30,13 +24,7 @@ export async function authMiddleware(c: Context, next: Next) {
     });
 
     if (!session) {
-      return c.json(
-        createErrorResponse(
-          "Invalid or expired session", 
-          "Please sign in again"
-        ), 
-        401
-      );
+      return c.json(createErrorResponse("Invalid or expired session", "Please sign in again"), 401);
     }
 
     c.set("user", session.user);
@@ -46,11 +34,8 @@ export async function authMiddleware(c: Context, next: Next) {
   } catch (error) {
     console.error("Auth middleware error:", error);
     return c.json(
-      createErrorResponse(
-        "Authentication failed",
-        process.env.NODE_ENV === "development" ? error : undefined
-      ), 
-      401
+      createErrorResponse("Authentication failed", process.env.NODE_ENV === "development" ? error : undefined),
+      401,
     );
   }
 }

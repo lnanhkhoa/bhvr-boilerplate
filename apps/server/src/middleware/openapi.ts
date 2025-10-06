@@ -16,7 +16,7 @@ export function createOpenAPIApp() {
             error: "Validation failed",
             details: result.error.flatten(),
           },
-          400
+          400,
         );
       }
     },
@@ -85,7 +85,7 @@ export function setupOpenAPIDocumentation(app: OpenAPIHono) {
       filter: true,
       showExtensions: true,
       showCommonExtensions: true,
-    })
+    }),
   );
 
   return app;
@@ -97,7 +97,7 @@ export function setupOpenAPIDocumentation(app: OpenAPIHono) {
 export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
   app.onError((err, c) => {
     console.error("🦫 API Error:", err);
-    
+
     // Handle Zod validation errors with serene clarity
     if (err.name === "ZodError") {
       return c.json(
@@ -107,7 +107,7 @@ export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
           details: JSON.parse(err.message),
           timestamp: new Date().toISOString(),
         },
-        400
+        400,
       );
     }
 
@@ -120,7 +120,7 @@ export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
           message: err.message,
           timestamp: new Date().toISOString(),
         },
-        400
+        400,
       );
     }
 
@@ -134,7 +134,7 @@ export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
           timestamp: new Date().toISOString(),
           environment: "development",
         },
-        500
+        500,
       );
     }
 
@@ -145,7 +145,7 @@ export function setupOpenAPIErrorHandling(app: OpenAPIHono) {
         error: "Internal server error - The beaver is working to fix this",
         timestamp: new Date().toISOString(),
       },
-      500
+      500,
     );
   });
 

@@ -5,6 +5,7 @@ This application uses PostgreSQL with Drizzle ORM for authentication via better-
 ## Setup
 
 1. Set your `DATABASE_URL` in `.env`:
+
    ```
    DATABASE_URL=postgresql://username:password@localhost:5432/database_name
    ```
@@ -18,13 +19,14 @@ This application uses PostgreSQL with Drizzle ORM for authentication via better-
 ## Available Scripts
 
 - `bun run db:generate` - Generate migration files from schema changes
-- `bun run db:push` - Push schema changes directly to database 
+- `bun run db:push` - Push schema changes directly to database
 - `bun run db:migrate` - Run pending migrations
 - `bun run db:studio` - Open Drizzle Studio for database inspection
 
 ## Schema
 
 The auth tables are automatically managed by better-auth:
+
 - `user` - User accounts
 - `session` - User sessions
 - `account` - OAuth provider accounts

@@ -3,6 +3,7 @@
 ## Middleware Organization Structure
 
 ### Directory Layout
+
 ```
 apps/server/src/middleware/
 ├── index.ts          # Barrel exports and setup functions
@@ -15,11 +16,13 @@ apps/server/src/middleware/
 ## OpenAPI Middleware (`openapi.ts`)
 
 ### Key Functions
+
 - `createOpenAPIApp()`: Creates OpenAPI-enabled Hono app with validation hooks
 - `setupOpenAPIDocumentation()`: Configures comprehensive API documentation
 - `setupOpenAPIErrorHandling()`: Implements peaceful error responses
 
 ### Features
+
 - Automatic Zod validation with detailed error messages
 - Environment-aware error handling (dev vs production)
 - Comprehensive OpenAPI 3.0 specification
@@ -28,12 +31,14 @@ apps/server/src/middleware/
 ## Scalar API Reference (`scalar.ts`)
 
 ### Key Functions
+
 - `createScalarMiddleware()`: Creates Scalar documentation middleware
 - `setupScalarDocumentation()`: Sets up multiple documentation endpoints
 - `createDevelopmentScalarConfig()`: Development-specific configuration
 - `createProductionScalarConfig()`: Production-optimized settings
 
 ### Endpoints
+
 - `/scalar` - Primary Scalar API Reference
 - `/docs` - Alternative access point
 - `/api-docs` - Additional documentation endpoint
@@ -42,12 +47,14 @@ apps/server/src/middleware/
 ## CORS Middleware (`cors.ts`)
 
 ### Key Functions
+
 - `createCorsMiddleware()`: Configurable CORS setup
 - `setupCorsMiddleware()`: Applies CORS to entire app
 - `createDevelopmentCorsConfig()`: Relaxed settings for development
 - `createProductionCorsConfig()`: Secure settings for production
 
 ### Configuration
+
 - Environment-aware origin handling
 - Comprehensive header management
 - Credential support for authenticated requests
@@ -66,13 +73,13 @@ The middleware is applied in a specific order for optimal functionality:
 
 ```typescript
 // Clean import from barrel export
-import { 
-  createOpenAPIApp, 
-  setupOpenAPIDocumentation, 
+import {
+  createOpenAPIApp,
+  setupOpenAPIDocumentation,
   setupOpenAPIErrorHandling,
   setupCorsMiddleware,
   setupScalarDocumentation,
-  createDevelopmentScalarConfig
+  createDevelopmentScalarConfig,
 } from "./middleware";
 
 // Methodical setup like a beaver's construction
@@ -84,6 +91,7 @@ setupOpenAPIErrorHandling(app);
 ```
 
 ## Type Safety Features
+
 - Full TypeScript support with proper interfaces
 - Configuration type definitions for all middleware
 - Environment-specific type constraints

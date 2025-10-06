@@ -201,14 +201,18 @@ EMAIL_FROM="Your App <noreply@yourapp.com>"
 ## Development vs Production Mode
 
 ### Development Mode (Default)
+
 When `RESEND_API_KEY` is **not set**:
+
 - ✅ **Auto sign-in enabled** - Users signed in immediately after registration
 - ✅ **Email verification disabled** - No email verification required
 - ✅ **Email logging** - Email content logged to console instead of sending
 - ✅ **OAuth optional** - Works without OAuth credentials
 
-### Production Mode  
+### Production Mode
+
 When `RESEND_API_KEY` **is set**:
+
 - 🔐 **Email verification required** - Users must verify email before access
 - 📧 **Real emails sent** - Uses Resend to send actual emails
 - 🚫 **No auto sign-in** - Standard authentication flow
@@ -219,11 +223,13 @@ When `RESEND_API_KEY` **is set**:
 The authentication system uses **PostgreSQL with Drizzle ORM**.
 
 ### Setup
+
 1. Set your `DATABASE_URL` to a valid PostgreSQL connection string
 2. Run database migrations: `bun run db:push`
 3. Tables are automatically created based on the schema
 
 ### Database Commands
+
 ```bash
 # Push schema changes to database
 bun run db:push
