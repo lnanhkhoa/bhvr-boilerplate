@@ -3,9 +3,6 @@
  * Organizing middleware like a beaver organizes its dam - everything in its right place
  */
 
-// OpenAPI middleware exports
-export { createOpenAPIApp, setupOpenAPIDocumentation, setupOpenAPIErrorHandling } from "./openapi";
-
 // Scalar API Reference middleware exports
 export {
   createScalarMiddleware,

@@ -1,5 +1,7 @@
-import { betterAuth } from "better-auth";
+import { betterAuth as BetterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { openAPI, bearer } from "better-auth/plugins";
+
 import { db } from "./db";
 import { sendPasswordResetEmail, sendWelcomeEmail, sendEmailVerificationEmail } from "./email";
 import {
@@ -13,22 +15,32 @@ import {
   APP_URL,
 } from "@/configs/env";
 import { RATE_LIMIT_CONFIG, SESSION_CONFIG } from "@/configs/constants";
+import type auth from "@/routes/auth";
 
-const auth = betterAuth({
+export const betterAuth = BetterAuth({
   database: drizzleAdapter(db, { provider: "pg" }),
   secret: BETTER_AUTH_SECRET,
   baseURL: API_URL,
   trustedOrigins: [APP_URL],
+  plugins: [openAPI(), bearer()],
   emailAndPassword: {
     enabled: true,
     autoSignIn: Boolean(RESEND_API_KEY),
     requireEmailVerification: Boolean(RESEND_API_KEY),
     sendResetPassword: async ({ user, url }: { user: any; url: string }) => {
-      const result = await sendPasswordResetEmail(user.email, url, user.name || undefined);
+      const subject = "Reset Your BHVR Password";
+      const result = await sendPasswordResetEmail(subject, user.email, {
+        userName: user.name || undefined,
+        resetUrl: url,
+      });
       if (!result.success) throw new Error(result.error || "Failed to send password reset email");
     },
     sendVerificationEmail: async ({ user, url }: { user: any; url: string }) => {
-      const result = await sendEmailVerificationEmail(user.email, url, user.name || undefined);
+      const subject = "Verify Your BHVR Email Address";
+      const result = await sendEmailVerificationEmail(subject, user.email, {
+        userName: user.name || undefined,
+        verificationUrl: url,
+      });
       if (!result.success) throw new Error(result.error || "Failed to send verification email");
     },
   },
@@ -59,8 +71,13 @@ const auth = betterAuth({
       {
         matcher: (context: any) => context.path === "/sign-up" && context.method === "POST",
         handler: async (ctx: any) => {
-          if (ctx.context.returned?.user) {
-            await sendWelcomeEmail(ctx.context.returned.user.email, ctx.context.returned.user.name || undefined);
+          const user = ctx.context.returned.user;
+          if (user) {
+            const email = user.email;
+            const userName = user.name;
+            const loginUrl = `${APP_URL}/login`;
+            const subject = "Welcome to BHVR!";
+            await sendWelcomeEmail(subject, email, { userName, loginUrl });
           }
         },
       },
@@ -68,7 +85,6 @@ const auth = betterAuth({
   },
 });
 
-export { auth };
-export type Auth = typeof auth;
-export type Session = typeof auth.$Infer.Session;
+export type Auth = typeof betterAuth;
+export type Session = typeof betterAuth.$Infer.Session;
 export type User = typeof auth.$Infer.Session.user;

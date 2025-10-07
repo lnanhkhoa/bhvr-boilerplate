@@ -39,23 +39,32 @@ export const sendEmail = async (options: SendEmailOptions) => {
   }
 };
 
-export const sendWelcomeEmail = async (to: string, userName?: string, loginUrl?: string) => {
-  const defaultLoginUrl = `${APP_URL}/login`;
-  const subject = "Welcome to BHVR!";
-  const html = (await render(
-    WelcomeEmail({ userName, loginUrl: loginUrl || defaultLoginUrl }) as any,
-  )) as unknown as string;
+export const sendWelcomeEmail = async (
+  subject = "Welcome to BHVR!",
+  to: string,
+  params: { userName?: string; loginUrl?: string },
+) => {
+  const { userName = "User", loginUrl = `${APP_URL}/login` } = params;
+  const html = (await render(WelcomeEmail({ userName, loginUrl }) as any)) as unknown as string;
   return sendEmail({ to, subject, html });
 };
 
-export const sendPasswordResetEmail = async (to: string, resetUrl: string, userName?: string) => {
-  const subject = "Reset Your BHVR Password";
+export const sendPasswordResetEmail = async (
+  subject = "Reset Your BHVR Password",
+  to: string,
+  params: { userName?: string; resetUrl: string },
+) => {
+  const { userName = "User", resetUrl } = params;
   const html = (await render(PasswordResetEmail({ userName, resetUrl }) as any)) as unknown as string;
   return sendEmail({ to, subject, html });
 };
 
-export const sendEmailVerificationEmail = async (to: string, verificationUrl: string, userName?: string) => {
-  const subject = "Verify Your BHVR Email Address";
+export const sendEmailVerificationEmail = async (
+  subject = "Verify Your BHVR Email Address",
+  to: string,
+  params: { userName?: string; verificationUrl: string },
+) => {
+  const { userName = "User", verificationUrl } = params;
   const html = (await render(EmailVerificationEmail({ userName, verificationUrl }) as any)) as unknown as string;
   return sendEmail({ to, subject, html });
 };

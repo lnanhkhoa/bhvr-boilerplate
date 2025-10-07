@@ -1,6 +1,6 @@
 import { cors } from "hono/cors";
 import type { OpenAPIHono } from "@hono/zod-openapi";
-import { API_URL, APP_URL, PRODUCTION_CLIENT_URL, STAGING_CLIENT_URL } from "@/configs/env";
+import { API_URL, APP_URL, IS_DEV, PRODUCTION_CLIENT_URL, STAGING_CLIENT_URL } from "@/configs/env";
 
 /**
  * CORS configuration for peaceful cross-origin communication
@@ -42,10 +42,10 @@ export function createCorsMiddleware(config?: CorsConfig) {
     maxAge: 86400, // 24 hours - peaceful caching
   };
 
-  const finalConfig = { ...defaultConfig, ...config };
+  const finalConfig: CorsConfig = { ...defaultConfig, ...config };
 
   return cors({
-    origin: finalConfig.origins || ["http://localhost:5173"],
+    origin: finalConfig.origins!,
     credentials: finalConfig.credentials,
     allowMethods: finalConfig.methods,
     allowHeaders: finalConfig.allowedHeaders,
@@ -81,13 +81,7 @@ export function createProductionCorsConfig(): CorsConfig {
  */
 export function createDevelopmentCorsConfig(): CorsConfig {
   return {
-    origins: [
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "http://localhost:4173",
-      "http://127.0.0.1:5173",
-      "http://127.0.0.1:3000",
-    ],
+    origins: [APP_URL, IS_DEV ? "http://localhost:*" : ""].filter(Boolean),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["*"],

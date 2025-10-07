@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
-import { auth } from "../lib/auth";
-import type { Session, User } from "../lib/auth";
+import { auth } from "../lib/better-auth";
+import type { Session, User } from "../lib/better-auth";
 import { createErrorResponse } from "@repo/shared";
 import { IS_DEV } from "@/configs/env";
 

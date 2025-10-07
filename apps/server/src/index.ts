@@ -6,10 +6,11 @@ import {
   setupScalarDocumentation,
   createDevelopmentScalarConfig,
 } from "./middlewares";
-import authRoutes from "./routes/auth";
+
 import userRoutes from "./routes/user";
 import healthRoutes from "./routes/health";
 import uploadRoutes from "./routes/upload";
+import authRoutes from "./routes/auth";
 
 // Create the OpenAPI app with beaver-inspired serenity
 export const app = createOpenAPIApp();
@@ -21,8 +22,13 @@ setupScalarDocumentation(app, createDevelopmentScalarConfig());
 setupOpenAPIErrorHandling(app);
 
 app.route("/", healthRoutes);
-app.route("/api/auth", authRoutes);
-app.route("/api/user", userRoutes);
-app.route("/api/upload", uploadRoutes);
+// app.route("/api/user", userRoutes);
+// app.route("/api/upload", uploadRoutes);
+
+
+[authRoutes].forEach((route) => {
+  app.basePath("/api").route("/", route);
+});
+
 
 export default app;

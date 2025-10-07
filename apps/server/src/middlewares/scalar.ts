@@ -16,11 +16,7 @@ export interface ScalarConfig {
  * Creates Scalar API Reference middleware with serene default configuration
  */
 export function createScalarMiddleware(config?: ScalarConfig) {
-  return Scalar({
-    spec: {
-      url: config?.url || "/doc/openapi.json",
-    },
-  } as any);
+  return Scalar({ spec: { url: config?.url || "/doc/openapi.json" } } as any);
 }
 
 /**
