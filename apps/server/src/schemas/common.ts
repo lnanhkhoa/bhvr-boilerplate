@@ -1,4 +1,12 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
+
+// Common field schemas
+export const IdSchema = z.string().min(1);
+export const EmailSchema = z.email();
+export const PasswordSchema = z.string().min(8).max(100);
+export const NameSchema = z.string().min(1).max(100);
+export const UrlSchema = z.url();
+export const DateTimeSchema = z.date();
 
 // Standard API Response schemas
 export const SuccessResponseSchema = z.object({
@@ -39,25 +47,8 @@ export const PaginationResponseSchema = z.object({
   hasPrev: z.boolean(),
 });
 
-// Common field schemas
-export const IdSchema = z.string().min(1);
-export const EmailSchema = z.string().email();
-export const PasswordSchema = z.string().min(8).max(100);
-export const NameSchema = z.string().min(1).max(100);
-export const UrlSchema = z.string().url();
-export const DateTimeSchema = z.string().datetime();
-
-// Health check schema
-export const HealthCheckResponseSchema = z.object({
-  success: z.literal(true),
-  message: z.string(),
-  timestamp: z.string(),
-  uptime: z.number(),
-  environment: z.string(),
-});
-
 // Standard error responses for OpenAPI
-export const StandardErrorResponses = {
+export const StandardOpenAPIErrorResponses = {
   400: {
     description: "Bad Request - Validation failed",
     content: {
@@ -100,28 +91,13 @@ export const StandardErrorResponses = {
   },
 };
 
-// Common OpenAPI tags
-export const ApiTags = {
-  HEALTH: "Health",
-  AUTH: "Authentication",
-  USER: "User",
-  ADMIN: "Admin",
-} as const;
-
-// Helper function to create standardized success responses
-export function createSuccessResponse<T>(data: T, message?: string) {
-  return {
-    success: true as const,
-    data,
-    message: message || "Success",
-  };
-}
-
-// Helper function to create standardized error responses
-export function createErrorResponse(error: string, details?: unknown) {
-  return {
-    success: false as const,
-    error,
-    details,
-  };
-}
+export const getStandardOpenAPISuccessResponses = (data: z.ZodType<any>) => ({
+  200: {
+    description: "Success",
+    content: {
+      "application/json": {
+        schema: SuccessResponseSchema.extend({ data }),
+      },
+    },
+  },
+});

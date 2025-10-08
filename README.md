@@ -13,6 +13,7 @@ While there are plenty of existing app building stacks out there, many of them a
 - **Full-Stack TypeScript**: End-to-end type safety between client and server
 - **Shared Types**: Common type definitions shared between client and server
 - **Monorepo Structure**: Organized as a workspaces-based monorepo with Turbo for build orchestration
+- **Authentication Ready**: Built-in authentication flows with email service integration
 - **Modern Stack**:
   - [Bun](https://bun.sh) (1.2.4+) as the JavaScript runtime and package manager
   - [Hono](https://hono.dev) (4.9.6) as the backend framework
@@ -23,6 +24,7 @@ While there are plenty of existing app building stacks out there, many of them a
   - [Turbo](https://turbo.build) (2.5.5) for monorepo build orchestration and caching
   - [shadcn/ui](https://ui.shadcn.com) components with Radix UI
   - [TanStack Query](https://tanstack.com/query) for API state management
+  - [OpenAPI](https://www.openapis.org) for API documentation and authentication routes
 
 ## Project Structure
 
@@ -49,7 +51,12 @@ apps/server/
 ├── dist/                 # Built output with client exports
 ├── src/
 │   ├── index.ts         # Main server entry point
-│   └── client.ts        # Hono client for type-safe API calls
+│   ├── client.ts        # Hono client for type-safe API calls
+│   ├── routes/          # API route handlers
+│   │   └── auth.ts      # Authentication routes
+│   ├── services/        # Business logic services
+│   │   └── email.ts     # Email service integration
+│   └── types/           # Server-specific type definitions
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -80,7 +87,7 @@ export default app;
 export type AppType = typeof app;
 ```
 
-If you wanted to add a database to Hono you can do so with a multitude of Typescript libraries like [Supabase](https://supabase.com), or ORMs like [Drizzle](https://orm.drizzle.team/docs/get-started) or [Prisma](https://www.prisma.io/orm)
+The server includes built-in authentication routes and email service integration. You can extend the authentication system or add a database using TypeScript libraries like [Supabase](https://supabase.com), or ORMs like [Drizzle](https://orm.drizzle.team/docs/get-started) or [Prisma](https://www.prisma.io/orm)
 
 ### Client
 
@@ -148,7 +155,7 @@ function Home() {
       </a>
       <h1 className="text-5xl font-black">bhvr</h1>
       <h2 className="text-2xl font-bold">Bun + Hono + Vite + React</h2>
-      <p>A typesafe fullstack monorepo</p>
+      <p>A typesafe fullstack monorepo with authentication</p>
       <div className="flex items-center gap-4">
         <Button onClick={() => sendRequest()}>Call API</Button>
         <Button variant="secondary" asChild>
@@ -319,6 +326,16 @@ Types are automatically shared between the client and server thanks to the share
 import { ApiResponse } from "@repo/shared";
 ```
 
+## Authentication
+
+The boilerplate includes a complete authentication system with:
+
+- **Email Service Integration**: Structured email service for sending authentication emails
+- **OpenAPI Routes**: Auto-documented authentication endpoints
+- **Type-safe Client**: Generated client with full type safety for auth operations
+
+Authentication routes are automatically available and documented through OpenAPI integration.
+
 ## Learn More
 
 - [Bun Documentation](https://bun.sh/docs)
@@ -330,3 +347,4 @@ import { ApiResponse } from "@repo/shared";
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [shadcn/ui Documentation](https://ui.shadcn.com)
 - [TanStack Query Documentation](https://tanstack.com/query/latest)
+- [OpenAPI Specification](https://www.openapis.org)

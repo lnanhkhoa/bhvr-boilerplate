@@ -1,34 +1,25 @@
-import {
-  createOpenAPIApp,
-  setupOpenAPIDocumentation,
-  setupOpenAPIErrorHandling,
-  setupCorsMiddleware,
-  setupScalarDocumentation,
-  createDevelopmentScalarConfig,
-} from "./middlewares";
+import { Hono } from "hono";
+import { NODE_ENV } from "./configs/env";
+import { setupAllMiddlewares } from "./middlewares";
+import authRoutes from "./routes/auth-routes";
 
-import userRoutes from "./routes/user";
-import healthRoutes from "./routes/health";
-import uploadRoutes from "./routes/upload";
-import authRoutes from "./routes/auth";
+const app = new Hono();
 
-// Create the OpenAPI app with beaver-inspired serenity
-export const app = createOpenAPIApp();
+setupAllMiddlewares(app);
+app.get("/", (c) => c.text("Hono API"));
+app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
 
-// Setup middleware in the proper order for peaceful operation
-setupCorsMiddleware(app);
-setupOpenAPIDocumentation(app);
-setupScalarDocumentation(app, createDevelopmentScalarConfig());
-setupOpenAPIErrorHandling(app);
-
-app.route("/", healthRoutes);
-// app.route("/api/user", userRoutes);
-// app.route("/api/upload", uploadRoutes);
-
-
-[authRoutes].forEach((route) => {
-  app.basePath("/api").route("/", route);
+app.get("/health", (c) => {
+  return c.json({
+    success: true as const,
+    message: "BHVR API is running",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: NODE_ENV,
+  });
 });
 
+//  setup routes
+app.route("/api", authRoutes)
 
 export default app;
