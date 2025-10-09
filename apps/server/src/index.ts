@@ -1,11 +1,15 @@
 import { Hono } from "hono";
 import { NODE_ENV } from "./configs/env";
 import { setupAllMiddlewares } from "./middlewares";
-import authRoutes from "./routes/auth-routes";
+import { auth } from "@/lib/auth";
+import { prettyJSON } from "hono/pretty-json";
 
 const app = new Hono();
 
+app.use(prettyJSON());
 setupAllMiddlewares(app);
+
+// routes
 app.get("/", (c) => c.text("Hono API"));
 app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
 
@@ -19,7 +23,6 @@ app.get("/health", (c) => {
   });
 });
 
-//  setup routes
-app.route("/api", authRoutes)
+app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 export default app;

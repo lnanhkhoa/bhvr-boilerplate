@@ -39,17 +39,17 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "BHVR Creative",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      name: "BHVR Creative.",
       logo: AudioWaveform,
       plan: "Startup",
     },
     {
-      name: "Evil Corp.",
+      name: "BHVR Creative.",
       logo: Command,
       plan: "Free",
     },

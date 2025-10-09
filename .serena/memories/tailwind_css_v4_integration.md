@@ -1,7 +1,7 @@
 # Tailwind CSS v4 Integration Pattern
 
 ## Architecture Philosophy
-The BHVR boilerplate follows a peaceful pattern where Tailwind CSS v4 is imported **once** at the application level, not in shared packages.
+The BHVR creative follows a peaceful pattern where Tailwind CSS v4 is imported **once** at the application level, not in shared packages.
 
 ## Key Principles
 

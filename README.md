@@ -328,7 +328,7 @@ import { ApiResponse } from "@repo/shared";
 
 ## Authentication
 
-The boilerplate includes a complete authentication system with:
+The repo includes a complete authentication system with:
 
 - **Email Service Integration**: Structured email service for sending authentication emails
 - **OpenAPI Routes**: Auto-documented authentication endpoints

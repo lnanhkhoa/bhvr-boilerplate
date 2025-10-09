@@ -5,13 +5,8 @@ export const NODE_ENV = process.env.NODE_ENV || "development";
 export const IS_DEV = NODE_ENV === "development" || NODE_ENV === "test";
 export const BETTER_AUTH_SECRET = process.env.BETTER_AUTH_SECRET || "development-secret-key-min-32-chars-long!!";
 
-export const API_URL = process.env.API_URL || "http://localhost:5000";
-export const STAGING_API_URL = process.env.STAGING_API_URL || "http://localhost:5000";
-export const PRODUCTION_API_URL = process.env.PRODUCTION_API_URL || "http://localhost:5000";
-
+export const API_URL = process.env.API_URL || "http://localhost:5100";
 export const APP_URL = process.env.APP_URL || "http://localhost:5101";
-export const STAGING_CLIENT_URL = process.env.STAGING_CLIENT_URL || "http://localhost:5101";
-export const PRODUCTION_CLIENT_URL = process.env.PRODUCTION_CLIENT_URL || "http://localhost:5101";
 
 // database
 export const DATABASE_URL = process.env.DATABASE_URL || "";

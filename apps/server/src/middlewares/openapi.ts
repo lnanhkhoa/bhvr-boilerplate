@@ -17,7 +17,7 @@ export function createOpenAPIApp() {
     info: {
       version: "1.0.0",
       title: "BHVR API",
-      description: "API documentation for BHVR boilerplate application",
+      description: "API documentation for BHVR creative application",
     },
     servers: [{ url: API_URL, description: "Development server" }],
   }));

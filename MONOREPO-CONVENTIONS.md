@@ -8,6 +8,7 @@ All internal packages use the `@repo/*` scope for consistency and clarity.
 
 ```
 @repo/ui                    - UI component library
+@repo/transactional         - Transactional API client
 @repo/shared                - Shared types and utilities  
 @repo/eslint-config         - ESLint configuration
 @repo/typescript-config     - TypeScript configuration
@@ -24,13 +25,14 @@ All internal packages use the `@repo/*` scope for consistency and clarity.
 ## Project Structure
 
 ```
-bhvr-boilerplate/
+bhvr-creative/
 ├── apps/
 │   ├── client/          - React + Vite frontend
 │   ├── server/          - Hono backend
 │   └── showcase/        - Component showcase app
 ├── packages/
 │   ├── ui/              - @repo/ui - UI components
+│   ├── transactional/   - @repo/transactional - Transactional API client
 │   ├── shared/          - @repo/shared - Shared types
 │   ├── eslint-config/   - @repo/eslint-config
 │   └── typescript-config/ - @repo/typescript-config
@@ -56,6 +58,7 @@ import type { ApiResponse } from "@repo/shared";
 {
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@repo/transactional": "workspace:*",
     "@repo/shared": "workspace:*"
   }
 }
@@ -147,9 +150,13 @@ Update imports across the codebase:
 ```typescript
 // Before
 import { Button } from "@repo/ui";
+import { ApiResponse } from "@repo/shared";
+import { MyComponent } from "./MyComponent";
 
 // After
 import { Button } from "@your-org/ui";
+import { ApiResponse } from "@your-org/shared";
+import { MyComponent } from "./MyComponent";
 ```
 
 ## Best Practices

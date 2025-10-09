@@ -1,16 +1,24 @@
+import { useEffect } from "react";
 import beaver from "@/assets/beaver.svg";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@repo/ui/components/shadcn/card";
-import { Input } from "@repo/ui/components/shadcn/input";
 import { Button } from "@repo/ui/components/shadcn/button";
-import { cn } from "@repo/ui/lib/utils";
 import { useNavigate } from "react-router";
+import { authClient } from "@/lib/auth-client";
+import { ROUTES } from "@/configs/constanst";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (session) {
+      navigate(ROUTES.dashboard);
+    }
+  }, [session, navigate]);
+
   return (
-    <div className="max-w-xl mx-auto flex flex-col gap-6 items-center justify-center min-h-screen">
+    <div className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-6">
       <a href="https://github.com/stevedylandev/bhvr" target="_blank" rel="noopener">
-        <img src={beaver} className="w-16 h-16 cursor-pointer" alt="beaver logo" />
+        <img src={beaver} className="h-16 w-16 cursor-pointer" alt="beaver logo" />
       </a>
       <h1 className="text-5xl font-black">bhvr</h1>
       <h2 className="text-2xl font-bold">Bun + Hono + Vite + React</h2>
@@ -19,35 +27,10 @@ export default function HomePage() {
         <Button variant="secondary" onClick={() => window.open("https://bhvr.dev", "_blank")}>
           Docs
         </Button>
-        <Button variant="secondary" onClick={() => navigate("/login")}>
+        <Button variant="secondary" onClick={() => navigate(ROUTES.login)}>
           Login
         </Button>
       </div>
-
-      <Card className="w-full max-w-md mt-6">
-        <CardHeader>
-          <CardTitle>@repo/ui Components Demo</CardTitle>
-          <CardDescription>All components imported from the centralized UI package</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Input placeholder="Try our Input component..." className={cn("w-full")} />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline">
-              Small
-            </Button>
-            <Button size="default">Default</Button>
-            <Button size="lg" variant="secondary">
-              Large
-            </Button>
-            <Button variant="ghost">Ghost</Button>
-          </div>
-          <p className="text-sm text-gray-600">
-            🎉 Using components from <code className="bg-gray-100 px-1 rounded">@repo/ui</code> package
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -27,7 +27,7 @@ BHVR is a full-stack TypeScript monorepo boilerplate that embodies the peaceful 
 ## Project Structure
 
 ```
-bhvr-boilerplate/
+bhvr-creative/
 ├── apps/
 │   ├── client/           # React + Vite frontend
 │   └── server/           # Hono backend with OpenAPI
