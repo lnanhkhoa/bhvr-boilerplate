@@ -3,4 +3,4 @@ export type ApiResponse = {
   success: true;
 };
 
-export * from "./auth.js";
+export * from "./auth";

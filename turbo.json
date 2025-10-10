@@ -2,6 +2,11 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    "cp-env": {
+      "cache": false,
+      "inputs": ["dotenv/.env.*"],
+      "outputs": ["apps/*/.env"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": [

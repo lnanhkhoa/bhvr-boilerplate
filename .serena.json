@@ -1,6 +1,6 @@
 {
-  "projectName": "BHVR Boilerplate",
-  "projectDescription": "A monorepo boilerplate built with Bun, Hono, Vite, and React",
+  "projectName": "BHVR Creative",
+  "projectDescription": "A monorepo built with Bun, Hono, Vite, and React",
   "primaryLanguages": ["typescript", "javascript", "tsx", "jsx"],
   "framework": "turbo",
   "architecture": {
