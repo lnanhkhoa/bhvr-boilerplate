@@ -326,6 +326,32 @@ Types are automatically shared between the client and server thanks to the share
 import { ApiResponse } from "@repo/shared";
 ```
 
+## Database
+
+bhvr includes PostgreSQL with Prisma ORM for type-safe database operations:
+
+- **Docker Setup**: Quick local PostgreSQL setup with docker-compose
+- **Prisma ORM**: Type-safe database queries and migrations
+- **Better Auth Integration**: Pre-configured authentication tables
+- **Flexible Deployment**: Works with Neon, Supabase, Railway, or any PostgreSQL provider
+
+### Quick Database Setup
+
+```bash
+# Start PostgreSQL with Docker
+docker-compose up -d
+
+# Initialize database
+cd apps/server
+bun run db:generate
+bun run db:push
+
+# Open Prisma Studio (database GUI)
+bun run db:studio
+```
+
+See [Database Documentation](./apps/server/docs/DATABASE.md) for detailed setup and usage.
+
 ## Authentication
 
 The repo includes a complete authentication system with:
