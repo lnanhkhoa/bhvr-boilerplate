@@ -3,9 +3,10 @@ import { createAuthClient } from "better-auth/react";
 import { jwtClient } from "better-auth/client/plugins";
 
 import { API_BASE_URL } from "@/configs/env";
+const authAPI = `${API_BASE_URL}/api/auth`;
 
 export const authClient = createAuthClient({
-  baseURL: API_BASE_URL,
+  baseURL: authAPI,
   // Better Auth uses cookies by default - no need for manual token management
   plugins: [jwtClient()],
   fetchOptions: {
